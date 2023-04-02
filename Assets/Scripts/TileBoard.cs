@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TileBoard : MonoBehaviour
 {
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private TileState[] tileStates;
     [SerializeField] private TileGrid grid;
+    [SerializeField] private GameObject clearPanel;
+    [SerializeField] private GameObject gameOverPanel;
     private List<Tile> tiles;
     Tile red, blue;
     private bool waiting;
+    private bool gameOver;
 
     private void Awake()
     {
+        gameOver = false;
         waiting = false;
         tiles = new List<Tile>(16);
     }
@@ -25,7 +31,12 @@ public class TileBoard : MonoBehaviour
     }
     private void Update()
     {
-        if (!waiting)
+        if (gameOver)
+        {
+            if (Input.anyKey)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        else if (!waiting)
             HandleInput();
     }
 
@@ -102,5 +113,15 @@ public class TileBoard : MonoBehaviour
         waiting = false;
 
         // TODO: check game over
+        if (!blue.gameObject.activeSelf)
+        {
+            gameOver = true;
+            gameOverPanel.SetActive(true);
+        }
+        else if (!red.gameObject.activeSelf)
+        {
+            gameOver = true;
+            clearPanel.SetActive(true);
+        }
     }
 }
