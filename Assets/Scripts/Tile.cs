@@ -17,7 +17,13 @@ public class Tile : MonoBehaviour
     public TileState State { get; private set; }
     public TileCell Cell { get; private set; }
     public eType Type { get; private set; }
+    [SerializeField] private RectTransform rect;
     [SerializeField] private Image background;
+
+    public void SetSize(float size)
+    {
+        rect.sizeDelta = new Vector2(size, size);
+    }
 
     public void SetState(TileState state, int type)
     {

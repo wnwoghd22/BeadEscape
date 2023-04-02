@@ -1,0 +1,26 @@
+{
+    "col": 4,
+    "row": 4,
+    "tileSize": 105.0,
+    "tiles": [
+        {
+            "type": 1,
+            "col": 3,
+            "row": 3
+        },
+        {
+            "type": 2,
+            "col": 2,
+            "row": 1
+        },{
+            "type": 3,
+            "col": 1,
+            "row": 2
+        },
+        {
+            "type": 4,
+            "col": 1,
+            "row": 1
+        }
+    ]
+}

@@ -16,19 +16,22 @@ public class TileBoard : MonoBehaviour
     Tile red, blue;
     private bool waiting;
     private bool gameOver;
+    float tileSize;
 
     private void Awake()
     {
         gameOver = false;
         waiting = false;
-        tiles = new List<Tile>(16);
     }
     private void Start()
     {
-        CreateTile(3, 3, 1);
-        CreateTile(1, 2, 2);
-        CreateTile(2, 1, 3);
-        CreateTile(1, 1, 4);
+        BoardData board = GameManager.Instance.Board;
+        tiles = new List<Tile>(board.Col * board.Row);
+        tileSize = board.TileSize;
+        foreach (TileData tile in board.Tiles)
+        {
+            CreateTile(tile.row, tile.col, tile.type);
+        }
     }
     private void Update()
     {
@@ -44,6 +47,7 @@ public class TileBoard : MonoBehaviour
     private void CreateTile(int i, int j, int k)
     {
         Tile tile = Instantiate(tilePrefab, grid.transform);
+        tile.SetSize(tileSize);
         tile.SetState(tileStates[k], k);
         tile.Spawn(grid.GetCell(i, j));
         tiles.Add(tile);
@@ -67,6 +71,10 @@ public class TileBoard : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             MoveTiles(Vector2Int.right, grid.Width - 2, -1, 0, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.BackToTitle();
         }
     }
     private void MoveTiles(Vector2Int direction, int startX, int deltaX, int startY, int deltaY)
