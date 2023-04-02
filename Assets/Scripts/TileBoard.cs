@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class TileBoard : MonoBehaviour
 {
@@ -80,8 +81,8 @@ public class TileBoard : MonoBehaviour
                     moved |= MoveTile(cell.Tile, direction);
             }
         }
-        if (moved)
-            StartCoroutine(WaitForChanges());
+        if (moved) _ = WaitForChangesAsync();
+            // StartCoroutine(WaitForChanges());
     }
     private bool MoveTile(Tile tile, Vector2Int direction)
     {
@@ -105,6 +106,25 @@ public class TileBoard : MonoBehaviour
             return true;
         }
         return false;
+    }
+    private async UniTaskVoid WaitForChangesAsync()
+    {
+        waiting = true;
+        await UniTask.Delay(100);
+        waiting = false;
+
+        // TODO: check game over
+        if (!blue.gameObject.activeSelf)
+        {
+            gameOver = true;
+            gameOverPanel.SetActive(true);
+        }
+        else if (!red.gameObject.activeSelf)
+        {
+            gameOver = true;
+            clearPanel.SetActive(true);
+        }
+
     }
     private IEnumerator WaitForChanges()
     {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public enum eType
 {
@@ -43,7 +44,26 @@ public class Tile : MonoBehaviour
 
         }
         else Cell.Tile = this;
-        StartCoroutine(Move(Cell.transform.position));
+        _ = MoveAsync(Cell.transform.position);
+        // StartCoroutine(Move(Cell.transform.position));
+    }
+    private async UniTaskVoid MoveAsync(Vector3 to)
+    {
+        float elapsed = 0f;
+        float duration = .1f;
+        Vector3 from = transform.position;
+
+        while (elapsed < duration)
+        {
+            transform.position = Vector3.Lerp(from, to, elapsed / duration);
+            elapsed += Time.deltaTime;
+            await UniTask.Yield();
+        }
+        transform.position = to;
+        if (Cell.IsHole)
+        {
+            gameObject.SetActive(false);
+        }
     }
     private IEnumerator Move(Vector3 to)
     {
