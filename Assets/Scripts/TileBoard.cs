@@ -118,7 +118,8 @@ public class TileBoard : MonoBehaviour
     private async UniTaskVoid WaitForChangesAsync()
     {
         waiting = true;
-        await UniTask.Delay(110);
+        // await UniTask.Delay(110);
+        await UniTask.WaitWhile(() => red.Moving || blue.Moving);
         waiting = false;
 
         // TODO: check game over

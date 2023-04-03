@@ -17,6 +17,7 @@ public class Tile : MonoBehaviour
     public TileState State { get; private set; }
     public TileCell Cell { get; private set; }
     public eType Type { get; private set; }
+    public bool Moving { get; private set; } = false;
     [SerializeField] private RectTransform rect;
     [SerializeField] private Image background;
 
@@ -55,6 +56,7 @@ public class Tile : MonoBehaviour
     }
     private async UniTaskVoid MoveAsync(Vector3 to)
     {
+        Moving = true;
         float elapsed = 0f;
         float duration = .1f;
         Vector3 from = transform.position;
@@ -70,6 +72,7 @@ public class Tile : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        Moving = false;
     }
     private IEnumerator Move(Vector3 to)
     {
