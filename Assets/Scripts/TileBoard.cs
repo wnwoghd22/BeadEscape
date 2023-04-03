@@ -37,7 +37,7 @@ public class TileBoard : MonoBehaviour
     {
         if (gameOver)
         {
-            if (Input.anyKey)
+            if (Input.anyKeyDown)
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         else if (!waiting)
@@ -118,7 +118,7 @@ public class TileBoard : MonoBehaviour
     private async UniTaskVoid WaitForChangesAsync()
     {
         waiting = true;
-        await UniTask.Delay(100);
+        await UniTask.Delay(110);
         waiting = false;
 
         // TODO: check game over
